@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
+import Api from '../Services/Api';
 
 
 const ObjectComponent = React.Component
@@ -7,19 +8,29 @@ const ObjectComponent = React.Component
 class Weather extends ObjectComponent {
     constructor(props){
         super(props)
-        
-        this.handleChange = this.handleChange.bind(this);
     }
 
     handleChange = (event) => {
-        console.log(event.target.value)
-       this.props.dispatch({type: "LOCATION",
-                            payload: event.target.value});
+       this.props.dispatch({
+           type: "LOCATION",
+           payload: event.target.value,
+        });
     } 
 
+    handleSubmit = () => {
+        Api.get().then((response) => {
+            this.props.dispatch({
+                type: "DARK_SKY_INFO",
+                payload: response,
+            });
+        });
+        
+
+    }
 
 
     render () {
+        console.log(this.props)
         return (
             
             <div>
@@ -28,6 +39,8 @@ class Weather extends ObjectComponent {
                 <input 
                     value={this.props.input}
                     onChange={this.handleChange} />
+                <button onClick={this.handleSubmit}>Submit</button>
+                <h3>{this.props.outSide ? this.props.outSide.timezone: null}</h3>
 
 
 
@@ -37,7 +50,10 @@ class Weather extends ObjectComponent {
 }
 
 const mapStateToProps = (state) => {
-    return {input: state.input}
+    return {
+        input: state.input,
+        outSide: state.outSide,
+    }
 };
 
 

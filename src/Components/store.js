@@ -3,7 +3,8 @@ import {composeWithDevTools} from 'redux-devtools-extension';
 
 
 const initialState = {
-    input: ""
+    input: "",
+    outSide: true,
 }
 
 function wreducer(state = initialState, action) {
@@ -11,8 +12,11 @@ function wreducer(state = initialState, action) {
         case"LOCATION":
             return {
                input: action.payload
-            
             };
+        case"DARK_SKY_INFO":
+            return {
+                outSide: action.payload
+            }    
         default:
             return state;
     }
